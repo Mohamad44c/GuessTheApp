@@ -60,4 +60,15 @@ public class MainActivity extends AppCompatActivity {
 
 //    + 3 differnt pages for different levels
 
+//    We have to take the image urls from the website and use the .split and .substring to get the src(image url),
+//    alt(image name) but the alt has "Image" for each name, have to remove it
+//    to use regex => we use Pattern p = Pattern.compile("regex in here");
+//    example: String txt = "Mississippi";
+//    Pattern p = Pattern.compile("Mi(.*?)pi"); means to print everything between Mi and pi
+//    We can use Pattern p = Pattern.compile("<img src=\"(.*?)\""); return everything between the "" in the src tag
+//    we have to create another object called Matcher match = p.matcher(txt);
+//    while(m.find()){
+//    sysout(m.group(1));}
+//    for the alt Pattern p = Pattern.compile("<img alt=\"(.*?)\"");
+
 }
