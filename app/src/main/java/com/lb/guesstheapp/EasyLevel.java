@@ -6,10 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -17,41 +19,54 @@ import javax.net.ssl.HttpsURLConnection;
 public class EasyLevel extends AppCompatActivity {
     ImageView imageView;
 
+
+    public class DownloadTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = null;
+            URL url;
+            HttpsURLConnection urlConnection = null;
+            try {
+                url = new URL(strings[0]);
+                urlConnection = (HttpsURLConnection) url.openConnection();
+
+                InputStream in = urlConnection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+
+                int data = reader.read();
+
+
+                while (data != -1) {
+
+                    result += (char) data;
+                    data = reader.read();
+                }
+
+                return result;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "Failed";
+            }
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_easy_level);
 
         imageView = (ImageView) findViewById(R.id.imageView);
-    }
 
-    public void DownloadIcon(View view) {
-        IconDownloader task = new IconDownloader();
-        Bitmap downloadedImg;
+        DownloadTask task = new DownloadTask();
+        String result = null;
+
         try {
-            downloadedImg = task.execute("https://animalfactguide.com/wp-content/uploads/2014/04/koala2.jpg").get();
-            imageView.setImageBitmap(downloadedImg);
+            result = task.execute("https://www.pcmag.com/picks/best-android-apps").get();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public class IconDownloader extends AsyncTask<String, Void, Bitmap> {
-
-        @Override
-        protected Bitmap doInBackground(String... urls) {
-            try {
-                URL url = new URL(urls[0]);
-                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-                connection.connect();
-                InputStream in = connection.getInputStream();//gets data
-                Bitmap downloadedImage = BitmapFactory.decodeStream(in);
-                return downloadedImage;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-
         }
     }
 }
