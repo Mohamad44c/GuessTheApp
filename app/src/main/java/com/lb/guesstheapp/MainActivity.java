@@ -3,9 +3,16 @@ package com.lb.guesstheapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    Home page: Allows user to choose a level
 
-//    + 3 differnt pages for different levels
+//    + 3 different pages for different levels
 
 //    We have to take the image urls from the website and use the .split and .substring to get the src(image url),
 //    alt(image name) but the alt has "Image" for each name, have to remove it
