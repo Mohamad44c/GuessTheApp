@@ -10,9 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -47,18 +50,21 @@ public class EasyLevel extends AppCompatActivity {
             try {
                 url = new URL(strings[0]);
                 urlConnection = (HttpsURLConnection) url.openConnection();
-
                 InputStream in = urlConnection.getInputStream();
-                InputStreamReader reader = new InputStreamReader(in);
+                Pattern p;
+                Matcher match = null;
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+                StringBuilder builder = new StringBuilder();
+                bufferedReader.readLine();
 
-                int data = reader.read();
-                Log.i("TEST", String.valueOf(data));
-                int dec = 2000;
-                while (data != -1 && dec != 0) {
-                    result += (char) data;
-                    data = reader.read();
+                while ((result = bufferedReader.readLine()) != null) {
+                    builder.append(result);
                     Log.i("Result: ", result);//html src code
-                    dec--;
+                    p = Pattern.compile("<img src=\"(.*?)\"");
+                    match = p.matcher(result);
+                }
+                while (match.find()) {
+                    System.out.println(match.group(1));
                 }
                 return result;
 

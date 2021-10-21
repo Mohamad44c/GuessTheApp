@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
 //    1. Display the apps; we have to guess their names based on the icon
 
-//    2. apply regular expressions after fetching the content of the webpage to extract the URL of the images and the correct answer
+//    2. apply regular expressions after fetching the content of the webpage to extract the URL
+//       of the images and the correct answer
 
 //    3. Display the icon and 4 buttons underneath, 1 one the buttons should contain the right answer
 
