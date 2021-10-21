@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -21,7 +20,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class EasyLevel extends AppCompatActivity {
     ImageView imageView;
-
+    String result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,6 @@ public class EasyLevel extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imageView);
 
         DownloadTask task = new DownloadTask();
-        String result = null;
 
         try {
             result = task.execute("https://www.pcmag.com/picks/best-android-apps").get();
@@ -44,33 +42,77 @@ public class EasyLevel extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            String result = null;
             URL url;
-            HttpsURLConnection urlConnection = null;
+            HttpsURLConnection urlConnection;
             try {
                 url = new URL(strings[0]);
                 urlConnection = (HttpsURLConnection) url.openConnection();
                 InputStream in = urlConnection.getInputStream();
-                Pattern p;
-                Matcher match = null;
+
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
                 StringBuilder builder = new StringBuilder();
+
                 bufferedReader.readLine();
 
                 while ((result = bufferedReader.readLine()) != null) {
                     builder.append(result);
-                    Log.i("Result: ", result);//html src code
-                    p = Pattern.compile("<img src=\"(.*?)\"");
-                    match = p.matcher(result);
-                }
-                while (match.find()) {
-                    System.out.println(match.group(1));
+//                    System.out.println(result);//html src code
+
+                    Pattern p = Pattern.compile("data-image-loader=\"(.*?)\"");
+                    Pattern alt = Pattern.compile("alt=\"(.*?)\"");
+//                    regex codes to get src and alt
+                    Matcher m = p.matcher(result);
+                    Matcher m2 = alt.matcher(result);
+
+
+                    while (m.find()) {
+                        System.out.println(m.group(1));
+//                        String imgs = m.group(1);
+//
+//                        String urls[] = imgs.split(".png");
+//
+//                        for (int i = 0; i < urls.length; i++) {
+//                            System.out.println("URL " + i + " " + urls[i]);
+//                        }
+                    }
                 }
                 return result;
 
             } catch (Exception e) {
                 e.printStackTrace();
                 return "Failed";
+            }
+        }
+    }
+
+    // the shit code below could be used to download the icons we need to display
+    public void DownloadImage(View view) {
+        ImageDownloader task2 = new ImageDownloader();
+        AsyncTask<String, Void, Bitmap> icon;
+        try {
+            icon = task2.execute("");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                URL url = new URL(urls[0]);
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                connection.connect();
+                InputStream in = connection.getInputStream();
+                Bitmap icon = BitmapFactory.decodeStream(in);
+
+
+                return icon;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
             }
         }
     }
