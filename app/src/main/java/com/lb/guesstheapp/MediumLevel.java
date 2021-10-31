@@ -15,6 +15,8 @@ import android.widget.Toast;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -30,6 +32,7 @@ public class MediumLevel extends AppCompatActivity {
     Random random;
     Bitmap icon;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,7 @@ public class MediumLevel extends AppCompatActivity {
 
         imageView = (ImageView) findViewById(R.id.imageView);
         scoreText = (TextView) findViewById(R.id.score);
+
         b1 = (Button) findViewById(R.id.button1);
         b2 = (Button) findViewById(R.id.button2);
         b3 = (Button) findViewById(R.id.button3);
@@ -61,6 +65,7 @@ public class MediumLevel extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         b2.setText(nameList.get(random.nextInt(70) + 1));
         b3.setText(nameList.get(random.nextInt(70) + 1));
         b4.setText(nameList.get(random.nextInt(70) + 1));
@@ -84,6 +89,7 @@ public class MediumLevel extends AppCompatActivity {
             x = random.nextInt(70) + 1;
             icon = task.execute(urlList.get(x)).get();
 
+
             b1.setText(nameList.get(x));
             b2.setText(nameList.get(random.nextInt(70) + 1));
             b3.setText(nameList.get(random.nextInt(70) + 1));
@@ -94,6 +100,7 @@ public class MediumLevel extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
     public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
