@@ -24,6 +24,10 @@ public class HardLevel extends AppCompatActivity {
     public int counter = 30;
     ImageView imageView;
     Button b1, b2, b3, b4;
+    TextView scoreText;
+    int score = 0;
+    ArrayList<String> urlList;
+    ArrayList<String> nameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +35,15 @@ public class HardLevel extends AppCompatActivity {
         setContentView(R.layout.activity_hard_level);
 
         imageView = (ImageView) findViewById(R.id.imageView);
+        scoreText = (TextView) findViewById(R.id.score);
         b1 = (Button) findViewById(R.id.button1);
         b2 = (Button) findViewById(R.id.button2);
         b3 = (Button) findViewById(R.id.button3);
         b4 = (Button) findViewById(R.id.button4);
 
         Bundle bundle = getIntent().getExtras();
-        ArrayList<String> urlList = (ArrayList<String>) bundle.getStringArrayList("urlsActual");
-        ArrayList<String> nameList = (ArrayList<String>) bundle.getSerializable("namesActual");
+        urlList = (ArrayList<String>) bundle.getStringArrayList("urlsActual");
+        nameList = (ArrayList<String>) bundle.getSerializable("namesActual");
 
         Random random = new Random();
         int x = random.nextInt(50) + 1;
@@ -48,17 +53,17 @@ public class HardLevel extends AppCompatActivity {
         Bitmap icon;
         try {
             icon = task.execute(urlList.get(x)).get();
+            b1.setText(nameList.get(x));
             imageView.setImageBitmap(icon);
         } catch (Exception e) {
             e.printStackTrace();
         }
 //        BUTTON TEXTS
-        b1.setText(nameList.get(random.nextInt(50) + 1));
-        b2.setText(nameList.get(random.nextInt(50) + 1));
-        b3.setText(nameList.get(random.nextInt(50) + 1));
-        b4.setText(nameList.get(random.nextInt(50) + 1));
+        b2.setText(nameList.get(random.nextInt(70) + 1));
+        b3.setText(nameList.get(random.nextInt(70) + 1));
+        b4.setText(nameList.get(random.nextInt(70) + 1));
 
-//        TIMER
+//        COUNTDOWN TIMER
         final TextView countTime = findViewById(R.id.timer);
         new CountDownTimer(30000, 1000) {
             @Override
@@ -75,8 +80,13 @@ public class HardLevel extends AppCompatActivity {
         }.start();
     }
 
-    public void checkAnswer(View view){
-
+    public void checkAnswer(View view) {
+        if (view.getId() == R.id.button1) {
+            score = score + 2;
+        } else {
+            score = score - 1;
+        }
+        scoreText.setText("Score: " + score);
     }
 
     public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {

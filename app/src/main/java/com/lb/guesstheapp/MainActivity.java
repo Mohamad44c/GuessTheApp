@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 easyIntent.putExtra("urlsActual", (Serializable) urlsActual);
                 easyIntent.putExtra("namesActual", (Serializable) namesActual);
                 startActivity(easyIntent);
-
             }
         });
         medium.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 for (int i = 5; i < appNames.length; i++) {
                     namesActual.add(appNames[i].substring(5, appNames[i].length() - 7));
                 }
-
 
                 return result;
 

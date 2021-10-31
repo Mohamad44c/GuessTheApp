@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -27,11 +28,20 @@ import javax.net.ssl.HttpsURLConnection;
 public class EasyLevel extends AppCompatActivity {
     ImageView imageView;
     Button b1, b2, b3, b4;
+    int x;
+    ArrayList<String> urlList;
+    ArrayList<String> nameList;
+    Bitmap icon;
+    ImageDownloader task;
+    Random random;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_easy_level);
+
+        ArrayList<String> urlList;
+        ArrayList<String> nameList;
 
         imageView = (ImageView) findViewById(R.id.imageView);
         b1 = (Button) findViewById(R.id.button1);
@@ -40,8 +50,8 @@ public class EasyLevel extends AppCompatActivity {
         b4 = (Button) findViewById(R.id.button4);
 
         Bundle bundle = getIntent().getExtras();
-        ArrayList<String> urlList = (ArrayList<String>) bundle.getStringArrayList("urlsActual");
-        ArrayList<String> nameList = (ArrayList<String>) bundle.getSerializable("namesActual");
+        urlList = (ArrayList<String>) bundle.getStringArrayList("urlsActual");
+        nameList = (ArrayList<String>) bundle.getSerializable("namesActual");
 
         for (int i = 0; i < urlList.size(); i++) {
             System.out.println(urlList.get(i));
@@ -49,32 +59,47 @@ public class EasyLevel extends AppCompatActivity {
         for (int i = 0; i < nameList.size(); i++) {
             System.out.println(nameList.get(i));
         }
-        Random random = new Random();
-        int x = random.nextInt(50) + 1;
+        random = new Random();
+        x = random.nextInt(70) + 1;
 
-//        DOWNLOADING IMAGE AND DISPLAYING
-        ImageDownloader task = new ImageDownloader();
-        Bitmap icon;
+//        DOWNLOADING APP IMAGE AND DISPLAYING
         try {
+            task = new ImageDownloader();
             icon = task.execute(urlList.get(x)).get();
+            b1.setText(nameList.get(x));
             imageView.setImageBitmap(icon);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        b1.setText(nameList.get(random.nextInt(50) + 1));
-        b2.setText(nameList.get(random.nextInt(50) + 1));
-        b3.setText(nameList.get(random.nextInt(50) + 1));
-        b4.setText(nameList.get(random.nextInt(50) + 1));
+//      RANDOM APP NAMES FOR THE BUTTONS
+        b2.setText(nameList.get(random.nextInt(70) + 1));
+        b3.setText(nameList.get(random.nextInt(70) + 1));
+        b4.setText(nameList.get(random.nextInt(70) + 1));
     }
 
+    //  CHECKING ANSWER
     public void checkAnswer(View view) {
-
+        if (view.getId() == R.id.button1) {
+            Toast.makeText(getApplicationContext(), "Correct", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_SHORT).show();
+        }
+        try {
+            task = new ImageDownloader();
+            random = new Random();
+            x = random.nextInt(70) + 1;
+            icon = task.execute(urlList.get(x)).get();
+            b1.setText(nameList.get(x));
+            imageView.setImageBitmap(icon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
-
+        //  FUNCTION TO DOWNLOAD IMAGE IN THE BACKGROUND
         @Override
         protected Bitmap doInBackground(String... urls) {
 
