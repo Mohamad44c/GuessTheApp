@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +52,11 @@ public class HardLevel extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+//        BUTTON TEXTS
+        b1.setText(nameList.get(random.nextInt(50) + 1));
+        b2.setText(nameList.get(random.nextInt(50) + 1));
+        b3.setText(nameList.get(random.nextInt(50) + 1));
+        b4.setText(nameList.get(random.nextInt(50) + 1));
 
 //        TIMER
         final TextView countTime = findViewById(R.id.timer);
@@ -67,6 +73,10 @@ public class HardLevel extends AppCompatActivity {
                 startActivity(new Intent(HardLevel.this, MainActivity.class));
             }
         }.start();
+    }
+
+    public void checkAnswer(View view){
+
     }
 
     public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {

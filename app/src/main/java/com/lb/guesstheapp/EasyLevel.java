@@ -27,7 +27,6 @@ import javax.net.ssl.HttpsURLConnection;
 public class EasyLevel extends AppCompatActivity {
     ImageView imageView;
     Button b1, b2, b3, b4;
-    String result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +61,15 @@ public class EasyLevel extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        b1.setText(nameList.get(random.nextInt(50) + 1));
+        b2.setText(nameList.get(random.nextInt(50) + 1));
+        b3.setText(nameList.get(random.nextInt(50) + 1));
+        b4.setText(nameList.get(random.nextInt(50) + 1));
+    }
+
+    public void checkAnswer(View view) {
+
     }
 
 

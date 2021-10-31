@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -48,6 +49,14 @@ public class MediumLevel extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        b1.setText(nameList.get(random.nextInt(50) + 1));
+        b2.setText(nameList.get(random.nextInt(50) + 1));
+        b3.setText(nameList.get(random.nextInt(50) + 1));
+        b4.setText(nameList.get(random.nextInt(50) + 1));
+    }
+
+    public void checkAnswer(View view){
+
     }
 
     public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
