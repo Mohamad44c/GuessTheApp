@@ -86,11 +86,21 @@ public class EasyLevel extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_SHORT).show();
         }
         try {
+//            GET EXTRAS FROM MAIN
+            Bundle bundle = getIntent().getExtras();
+            urlList = (ArrayList<String>) bundle.getStringArrayList("urlsActual");
+            nameList = (ArrayList<String>) bundle.getSerializable("namesActual");
+//            DOWNLOAD NEW IMAGE
             task = new ImageDownloader();
             random = new Random();
             x = random.nextInt(70) + 1;
             icon = task.execute(urlList.get(x)).get();
+//            SET BUTTON TEXTS
             b1.setText(nameList.get(x));
+            b2.setText(nameList.get(random.nextInt(70) + 1));
+            b3.setText(nameList.get(random.nextInt(70) + 1));
+            b4.setText(nameList.get(random.nextInt(70) + 1));
+//            DISPLAY NEW IMAGE
             imageView.setImageBitmap(icon);
         } catch (Exception e) {
             e.printStackTrace();

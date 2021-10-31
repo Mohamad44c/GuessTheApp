@@ -25,9 +25,12 @@ public class HardLevel extends AppCompatActivity {
     ImageView imageView;
     Button b1, b2, b3, b4;
     TextView scoreText;
-    int score = 0;
+    int score = 0, x;
     ArrayList<String> urlList;
     ArrayList<String> nameList;
+    ImageDownloader task;
+    Random random;
+    Bitmap icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,26 @@ public class HardLevel extends AppCompatActivity {
             score = score - 1;
         }
         scoreText.setText("Score: " + score);
+        try {
+//            GET EXTRAS FROM MAIN
+            Bundle bundle = getIntent().getExtras();
+            urlList = (ArrayList<String>) bundle.getStringArrayList("urlsActual");
+            nameList = (ArrayList<String>) bundle.getSerializable("namesActual");
+//            DOWNLOADING NEW IMAGE
+            task = new ImageDownloader();
+            random = new Random();
+            x = random.nextInt(70) + 1;
+            icon = task.execute(urlList.get(x)).get();
+//            SET NEW BUTTON TEXTS
+            b1.setText(nameList.get(x));
+            b2.setText(nameList.get(random.nextInt(70) + 1));
+            b3.setText(nameList.get(random.nextInt(70) + 1));
+            b4.setText(nameList.get(random.nextInt(70) + 1));
+//            DISPLAY DOWNLOADED IMAGE
+            imageView.setImageBitmap(icon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
