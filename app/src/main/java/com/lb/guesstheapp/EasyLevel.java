@@ -18,6 +18,7 @@ import java.io.OptionalDataException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,33 +41,29 @@ public class EasyLevel extends AppCompatActivity {
         b4 = (Button) findViewById(R.id.button4);
 
         Bundle bundle = getIntent().getExtras();
-        String result = bundle.getString("result");
-        System.out.println("FROM MAIN" + result);
+        ArrayList<String> urlList = (ArrayList<String>) bundle.getStringArrayList("urlsActual");
+        ArrayList<String> nameList = (ArrayList<String>) bundle.getSerializable("namesActual");
 
-        //        EasyLevel.ImageDownloader task2 = new EasyLevel.ImageDownloader();
-//        Bitmap icon;
-//        try {
-//            icon = task2.execute("https://i.pcmag.com/imagery/collection-group-product/03x8j28CrTYoWktBySjR3PX.1607112323.fit_lim.size_723x.png").get();
-//            imageView.setImageBitmap(icon);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        for (int i = 0; i < urlList.size(); i++) {
+            System.out.println(urlList.get(i));
+        }
+        for (int i = 0; i < nameList.size(); i++) {
+            System.out.println(nameList.get(i));
+        }
+        Random random = new Random();
+        int x = random.nextInt(50) + 1;
 
-
-    }
-
-
-    //  used to download the icons we need to display
-    public void DownloadImage() {
-        ImageDownloader task2 = new ImageDownloader();
+//        DOWNLOADING IMAGE AND DISPLAYING
+        ImageDownloader task = new ImageDownloader();
         Bitmap icon;
         try {
-            icon = task2.execute("https://i.pcmag.com/imagery/collection-group-product/03x8j28CrTYoWktBySjR3PX.1607112323.fit_lim.size_723x.png").get();
+            icon = task.execute(urlList.get(x)).get();
             imageView.setImageBitmap(icon);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
