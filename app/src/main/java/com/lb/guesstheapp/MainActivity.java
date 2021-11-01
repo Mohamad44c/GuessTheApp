@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             @Override
             public void onClick(View view) {
                 Intent easyIntent = new Intent(MainActivity.this, EasyLevel.class);
+//                Passing list of data (urls and app names)
                 easyIntent.putExtra("urlsActual", (Serializable) urlsActual);
                 easyIntent.putExtra("namesActual", (Serializable) namesActual);
                 startActivity(easyIntent);
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
 
         DownloadTask task = new DownloadTask();
+        //downloading source code of this page
         String link = "https://www.pcmag.com/picks/best-android-apps";
         try {
             result = task.execute(link).get();
@@ -100,8 +102,10 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 while ((result = bufferedReader.readLine()) != null) {
                     builder.append(result);
 
+//                    extract urls and app names
                     Matcher match = Pattern.compile("data-image-loader=\"(.*?)\"").matcher(result);
                     Matcher match2 = Pattern.compile("alt=\"(.*?)\"").matcher(result);
+
 
                     while (match.find()) {
                         URLMatches.add(match.group());
@@ -114,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 imgUrls = URLMatches.toArray(new String[0]);
                 appNames = NameMatches.toArray(new String[0]);
 
-
+//                removing data-image-loader="" and alt=""
                 for (int i = 0; i < imgUrls.length; i++) {
                     urlsActual.add(imgUrls[i].substring(19, imgUrls[i].length() - 1));
                 }

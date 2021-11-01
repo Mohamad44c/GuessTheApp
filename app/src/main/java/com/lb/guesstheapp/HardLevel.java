@@ -61,7 +61,7 @@ public class HardLevel extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        BUTTON TEXTS
+//        CHANGING BUTTON TEXTS
         b2.setText(nameList.get(random.nextInt(70) + 1));
         b3.setText(nameList.get(random.nextInt(70) + 1));
         b4.setText(nameList.get(random.nextInt(70) + 1));
